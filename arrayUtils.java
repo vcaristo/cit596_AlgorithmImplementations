@@ -1,7 +1,10 @@
 import java.util.Arrays;
 
 /*
- * Class includes static implementations of various array find and sort algorithms
+ * Class includes static implementations of various array find and sort algorithms:
+ *      - Insertion Sort (insertionSort)
+ *      - Binary Search  (binSearch)
+ *      - Median of Two Arrays (findMedianSorted)
  */
 public class arrayUtils {
     
