@@ -8,7 +8,7 @@ using namespace std;
  * 
  * Outputs the number of operations performed by each variation. 
  * 
- * Running time: O(2^n)
+ * Running time: O(2^n) (both variations)
 */
 
 
