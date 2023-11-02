@@ -3,14 +3,21 @@
 
 using namespace std;
 
+/**
+ * Implementatation of two variations of the classic Towers of Hanoi recursive algorithm.
+ * 
+ * Outputs the number of operations performed by each variation. 
+ * 
+ * Running time: O(2^n)
+*/
+
+
 /*
-*  Towers of Hanoi (standard)
 *  Single discs moved in O(1)-time
 */
 int hanoi(int a,int b, int c, int n);
 
 /*
-* Towers of Hanoi - revised
 * ith smallest disc takes O(i) time to move
 */
 int hanoi2(int a, int b, int c, int n, int i);
