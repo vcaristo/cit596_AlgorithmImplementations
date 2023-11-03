@@ -11,14 +11,27 @@ public class arrayUtils {
     public static void main (String args[]){
         // n = 7
         int[] A = {1, 3, 4, 7, 8, 10};
-        int[] B = {4, 5, 6, 8, 9, 14};
+        int[] B = {10, 5, 6, 8, 9, 14};
 
         // sorted array = {1, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 14}
         // sorted median = (6+7)/2 = 6.5
 
-        System.out.println("A" + Arrays.toString(A));
-        System.out.println("B" + Arrays.toString(B));
-        System.out.println("Median of A U B: " + arrayUtils.findMedianSorted(A,B)+"\n");  
+        System.out.println("-------MEDIAN OF TWO ARRAYS---------");
+        System.out.println("A: " + Arrays.toString(A));
+        System.out.println("B: " + Arrays.toString(B));
+        System.out.println("Median of A U B: " + arrayUtils.findMedianSorted(A,B)); 
+       
+        System.out.println("\n--------INSERTION SORT-----------");
+        System.out.println("B: " + Arrays.toString(B));
+       arrayUtils.insertionSort(B);
+       System.out.println("B sorted:" + Arrays.toString(B));
+    
+       int target = 7;
+        System.out.println("\n--------BINARY SEARCH-----------");
+        System.out.println("A: " + Arrays.toString(A));
+       System.out.println("Location of " + target + ": " + arrayUtils.binSearch(A,target));
+       target = 15;
+       System.out.println("Location of " + target + ": " + arrayUtils.binSearch(A,target));
     }
 
     /*
@@ -76,36 +89,41 @@ public class arrayUtils {
     }
 
     /*
-     * Recursive implementation of insertion sort to sort an array of integers in ascending order.
+     * Implementation of insertion sort to sort an array of integers in ascending order.
      * 
      * Running time: O(n^2), quadratic on the size of the array.
      */
-    public static void insertionSort(int [] a, int index){
-        // base case
-        if (index == 1){
-            return;
-        }
-
-        arrayUtils.insertionSort(a, index-1);
+    public static void insertionSort(int [] a){
         
-        int j = index;
+        for (int i = 0; i < a.length; i++){
+            int j = i;
 
-        while (j > 0 && a[j-1] > a[j]){
-            int swap = a[j];
-            a[j]=a[j-1];
-            a[j-1]=swap;
-            j--;
+            while (j > 0 && a[j-1] > a[j]){
+                int swap = a[j];
+                a[j]=a[j-1];
+                a[j-1]=swap;
+                j--;
+            }
         }
     }
 
     /*
-     * Implementation of binary search. 
+     * Recursive implementation of binary search. 
      * Given a sorted array, A, and a target value, v, return the index of the target, otherwise return -1.
      * 
      * Running time: O(log n), logarithmic on the size of the array
      */
-    public static int binSearch(int[] A, int v, int x, int y){
-        // base case - length == 1
+    
+    /*
+     * Wrapper function for a recursive implementation in binSearchRecurse
+     */
+
+     public static int binSearch(int[] A, int target){
+        return binSearchRecurse(A, target, 0, A.length - 1);
+    }
+
+    private static int binSearchRecurse(int[] A, int v, int x, int y){
+        // base case: length == 1
         if (x==y){
             if (A[x] == v)
                 return x;
@@ -114,27 +132,29 @@ public class arrayUtils {
         }
 
         //check middle value
-        double middle;
+        double middleValue;
+        int midRightIdx = x+(y-x+1)/2;  // middle index for odd-length arrays
+        int midLeftIdx = x+(y-x+1)/2-1;
 
         if ((y-x+1) % 2 == 0){     // even-length array
-            middle = (A[x+((y-x+1)/2)] + A[x+((y-x+1)/2)-1])/2;
+            middleValue = (A[midRightIdx] + A[midLeftIdx])/2.0;
         }
         else{
-            middle =  A[x+((y-x+1)/2)]; 
-            if (middle == x){
-                return x+((y-x+1)/2);
+            middleValue =  A[midRightIdx]; 
+            if (middleValue == x){
+                return x+((y-x+1)/2);        // we have a match!
             }
         }
 
-        if (v < middle){
-            return arrayUtils.binSearch(A, v, x, x+(y-x+1)/2 - 1);
+        if (v < middleValue){
+            return arrayUtils.binSearchRecurse(A, v, x, midLeftIdx);
         }
         else{
             if ((y-x+1) % 2 == 0){      // even-length array
-                return arrayUtils.binSearch(A, v, x + (y-x+1)/2 +1, y);
+                return arrayUtils.binSearchRecurse(A, v, midRightIdx, y);
             }
             else{
-                return arrayUtils.binSearch(A, v, x + (y-x+1)/2, y);
+                return arrayUtils.binSearchRecurse(A, v, midRightIdx+1, y);
             }
         }
 
